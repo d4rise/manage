@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}Курсы - SU IT{% endblock %}
+
+{% block content %}
+<style>
+    /* Стили специально для этой страницы */
+    .filter-bar {
+        margin-bottom: 30px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    
+    .filter-link {
+        padding: 8px 16px;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        text-decoration: none;
+        color: #333;
+        font-size: 14px;
+    }
+
+    .filter-link:hover, .filter-link.active {
+        background-color: var(--su-blue);
+        color: white;
+        border-color: var(--su-blue);
+    }
+
+    .courses-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+    }
+
+    .course-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        transition: transform 0.2s;
+        border: 1px solid #eee;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .course-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .course-img {
+        height: 160px;
+        background-color: #ddd; /* Заглушка, если нет картинки */
+        object-fit: cover;
+        width: 100%;
+    }
+
+    .course-body {
+        padding: 20px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .course-category {
+        font-size: 12px;
+        text-transform: uppercase;
+        color: #777;
+        margin-bottom: 5px;
+    }
+
+    .course-title {
+        font-size: 18px;
+        margin: 0 0 10px;
+        color: #333;
+    }
+
+    .course-price {
+        font-weight: bold;
+        color: var(--su-blue);
+        font-size: 16px;
+        margin-top: auto; /* Прижимает цену вниз */
+        margin-bottom: 15px;
+    }
+</style>
+
+<h1>Все программы обучения</h1>
+
+<div class="filter-bar">
+    <a href="/" class="filter-link active">Все направления</a>
+    {% for cat in categories %}
+        <a href="#" class="filter-link">{{ cat.title }}</a>
+    {% endfor %}
+</div>
+
+<div class="courses-grid">
+    {% for course in courses %}
+        <div class="course-card">
+            {% if course.image %}
+                <img src="{{ course.image.url }}" alt="{{ course.title }}" class="course-img">
+            {% else %}
+                <div class="course-img" style="background: #eee; display: flex; align-items: center; justify-content: center; color: #999;">
+                    Нет фото
+                </div>
+            {% endif %}
+            
+            <div class="course-body">
+                <div class="course-category">{{ course.category.title }}</div>
+                <h3 class="course-title">{{ course.title }}</h3>
+                <p style="font-size: 14px; color: #666;">{{ course.description|truncatewords:15 }}</p>
+                <div class="course-price">{{ course.price }} ₸</div>
+                <a href="#" class="btn">Подробнее</a>
+            </div>
+        </div>
+    {% empty %}
+        <p>Курсов пока нет. Зайдите в админку и добавьте их!</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}SU IT School{% endblock %}</title>
+    <style>
+        /* Стили Satbayev University Style (No-JS) */
+        :root {
+            --su-blue: #0056b3; /* Синий цвет как на логотипе */
+            --su-dark: #333;
+            --su-gray: #f4f4f4;
+            --su-white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--su-gray);
+            color: var(--su-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Шапка сайта */
+        header {
+            background-color: var(--su-blue);
+            color: var(--su-white);
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--su-white);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid white; /* Рамка как на логотипе */
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .nav-links a {
+            color: var(--su-white);
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+            opacity: 0.9;
+        }
+
+        /* Основной контент */
+        main {
+            flex: 1; /* Растягивает контент, прижимая футер вниз */
+            padding: 40px 0;
+        }
+
+        /* Карточки и кнопки */
+        .btn {
+            display: inline-block;
+            background-color: var(--su-blue);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            background-color: #004494;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--su-blue);
+            color: var(--su-blue);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--su-blue);
+            color: white;
+        }
+
+        /* Подвал */
+        footer {
+            background-color: #2c3e50; /* Темно-серый для футера */
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 14px;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+   {% block header %}
+        <header>
+            <div class="container navbar">
+                <a href="/" class="logo">SU IT School</a>
+                <nav class="nav-links">
+                    <a href="/">Все курсы</a>
+                    {% if user.is_authenticated %}
+                        {% if user.is_director %}
+                            <a href="#">📊 Аналитика</a>
+                        {% endif %}
+                        <a href="{% url 'users:profile' %}">👤 Мой кабинет</a>
+                        <a href="/admin/logout/">Выйти</a>
+                    {% else %}
+                        <a href="{% url 'users:login' %}">Войти</a>
+                        <a href="{% url 'users:register' %}">Регистрация</a>
+                    {% endif %}
+                </nav>
+            </div>
+        </header>
+    {% endblock %}
+
+    <main>
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            &copy; 2024 Satbayev University IT School. Курсовой проект.
+        </div>
+    </footer>
+
+</body>
+</html>
